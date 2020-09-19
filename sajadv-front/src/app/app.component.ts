@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Usuario } from './usuario.model';
 import { UsuarioService } from './usuario.service';
 
@@ -15,7 +16,9 @@ export class AppComponent implements OnInit{
   usuario: Usuario = new Usuario();
 
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService) { }
+  constructor(private fb: FormBuilder, 
+    private usuarioService: UsuarioService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -33,7 +36,7 @@ export class AppComponent implements OnInit{
     this.usuario.ativo = true;
     this.usuarioService.salvarUsuario(this.usuario).subscribe(f => {
 
-      console.warn(f);
+      this.toastr.success("tksryksry", "xfhkxfykxyf");
     });
   }
 }
