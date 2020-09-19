@@ -1,0 +1,50 @@
+<form [formGroup]="usuarioform">
+
+  <div class="teste">
+
+    Cadastro de Pessoa
+
+    <div class="form-row teste" >
+      <div class="form-group col-md-1">
+        <img
+          src="https://img.freepik.com/vetores-gratis/imagens-animadas-abstratas-neon-lines_23-2148344065.jpg?size=626&ext=jpg"
+          alt="Girl in a jacket" width="50" height="50">
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <label for="inputNome" style="padding-top: 15px;">Nome</label>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <div class="btn btn-mdb-color btn-rounded float-left">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="inputNome">Nome</label>
+        <input type="email" class="form-control" id="inputNome" formControlName="nome" [(ngModel)]="usuario.nome">
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="inputCpf">CPF</label>
+        <input type="text" class="form-control" id="inputCpf" formControlName="cpf" [(ngModel)]="usuario.cpf">
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="inputemail" formControlName="email" [(ngModel)]="usuario.email">
+      </div>
+
+      <div class="form-group col-md-3">
+        <label for="email">Data Nasc</label>
+        <input type="date" class="form-control" id="inputdt" formControlName="dtnasc" [(ngModel)]="usuario.dtnasc">
+      </div>
+    </div>
+
+    <button type="button" (click)="onSubmit()" class="btn btn-primary">Salvar</button>
+  </div>
+</form>
