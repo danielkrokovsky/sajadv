@@ -12,11 +12,16 @@
       <div class="form-group">
         <img
           src="https://img.freepik.com/vetores-gratis/imagens-animadas-abstratas-neon-lines_23-2148344065.jpg?size=626&ext=jpg"
-          alt="Girl in a jacket" width="50" height="50">
+          alt="Girl in a jacket" width="100" height="100">
       </div>
 
-      <div class="d-flex justify-content-center">
-        <label for="inputNome" style="padding-top: 15px;">Nome</label>
+      <div class="form-group col-md-4 inputfile">
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileChange($event)" formControlName="avatar" [(ngModel)]="usuario.avatar">
+            <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">{{nomeArquivo}}</label>
+          </div>
+        </div>
       </div>
 
       <div class="d-flex justify-content-center">
@@ -30,7 +35,7 @@
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="inputNome">Nome</label>
-        <input type="text" class="form-control" id="inputNome" formControlName="nome">
+        <input type="text" class="form-control" id="inputNome" formControlName="nome"  [(ngModel)]="usuario.nome">
 
         <div *ngIf="!nome.pristine && nome.errors">
 
@@ -46,7 +51,7 @@
 
       <div class="form-group col-md-2">
         <label for="inputCpf">CPF</label>
-        <input type="number" class="form-control" id="inputCpf" formControlName="cpf">
+        <input type="text" class="form-control" id="inputCpf" formControlName="cpf" [(ngModel)]="usuario.cpf">
 
         <div *ngIf="!cpf.pristine && cpf.errors">
           <div class="alert alert-danger" *ngIf="cpf.errors.required">
@@ -60,7 +65,7 @@
 
       <div class="form-group col-md-4">
         <label for="email">E-mail</label>
-        <input type="email" class="form-control" id="inputemail" formControlName="email" >
+        <input type="email" class="form-control" id="inputemail" formControlName="email"  [(ngModel)]="usuario.email">
 
         <div *ngIf="!email.pristine && email.errors">
           <div class="alert alert-danger" *ngIf="email.errors.email">
@@ -74,12 +79,13 @@
 
       <div class="form-group col-md-2">
         <label for="email">Data Nasc</label>
-        <input type="date" class="form-control" id="inputdt" formControlName="dtnasc" >
+        <input type="date" class="form-control" id="inputdt" formControlName="dtnasc" [(ngModel)]="usuario.dtnasc">
       </div>
     </div>
 
     <div class="form-row" style="float: right; margin-bottom: 50px;margin-top: 50px;">
-      <button type="button" (click)="enviarDados()" class="btn btn-primary" [disabled]="!usuarioform.valid">Salvar</button>
+      <button type="button" (click)="enviarDados()" class="btn btn-primary"
+        [disabled]="!usuarioform.valid">Salvar</button>
       <button type="submit" class="btn btn-primary">Pesquisar</button>
     </div>
 
@@ -87,11 +93,11 @@
       <thead class="thead-light">
 
         <tr>
-          <th scope="col">id</th>
-          <th scope="col">nome</th>
-          <th scope="col">cpf</th>
-          <th scope="col">email</th>
-          <th scope="col">dtnasc</th>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Cpf</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Data Nascimento</th>
           <th scope="col">Status</th>
           <th scope="col">Eventos</th>
         </tr>
@@ -105,12 +111,14 @@
           <th scope="row">{{user.dtnasc | date: 'dd/MM/yyyy'}}</th>
           <th scope="row">{{user.ativo}}</th>
           <th scope="row">
-            <a href="#" data-toggle="tooltip" ngbTooltip="Editar">
-              <span class="glyphicon">&#x270f;</span>
+            <center>
+            <a href="#" data-toggle="tooltip" ngbTooltip="Editar" class="icon" (click)="editarUsuario(user)">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
-            <a href="#" ngbTooltip="Excluir">
-              <span class="glyphicon">&#x270f;</span>
+            <a href="#" ngbTooltip="Excluir" class="icon" (click)="excluirUsuario(user)">
+              <i class="fa fa-trash" aria-hidden="true"></i>
             </a>
+          </center>
           </th>
         </tr>
       </tbody>

@@ -7,9 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.usuario.model.Usuario;
 import com.example.demo.usuario.service.UsuarioService;
@@ -29,7 +32,15 @@ public class UsuarioController {
 		usuario.setAtivo(true);
 		Usuario user = this.usuarioService.save(usuario);
 
-		return ResponseEntity.created(URI.create("/usuario/" + user.getId())).body(user);
+		return ResponseEntity.created(URI.create("/usuario/" + 1)).body(user);
+	}
+	
+	@PutMapping
+	public ResponseEntity<Usuario> update(@RequestBody Usuario usuario) {
+		
+		Usuario user = this.usuarioService.save(usuario);
+
+		return ResponseEntity.created(URI.create("/usuario/" + 1)).body(user);
 	}
 
 	@GetMapping

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { utils } from 'protractor';
 import { Utils } from './shared/utils';
+import { Validacoes } from './shared/validacoes';
 import { Usuario } from './usuario.model';
 import { UsuarioService } from './usuario.service';
 
@@ -13,11 +13,12 @@ import { UsuarioService } from './usuario.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'sajadv-front';
 
   usuarioform: FormGroup;
   listUsuario: Array<Usuario>;
-
+  nomeArquivo: any = new String('Selcione uma foto');
+  avatar: any;
+  usuario : Usuario;
 
   constructor(private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -25,6 +26,14 @@ export class AppComponent implements OnInit {
     protected activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.usuario = new Usuario(
+      null,
+      null,
+      null,
+      null,
+      null
+    );
 
     this.criarFormularioDeUsuario();
     this.activatedRoute.data.subscribe(data => {
@@ -35,9 +44,10 @@ export class AppComponent implements OnInit {
   criarFormularioDeUsuario() {
     this.usuarioform = this.fb.group({
       nome: ['', Validators.compose([Validators.required, Validators.maxLength(150), Validators.minLength(3)])],
-      cpf: ['', Validators.compose([Validators.required])],
+      cpf: ['', Validators.compose([Validators.required, Validacoes.ValidaCpf])],
       email: ['', Validators.compose([Validators.email, Validators.maxLength(400)])],
-      dtnasc: ['', Validators.compose([Validators.required])]
+      dtnasc: ['', Validators.compose([Validators.required])],
+      avatar: ['']
     });
   }
 
@@ -45,23 +55,42 @@ export class AppComponent implements OnInit {
   public enviarDados(): void {
 
     const dadosFormulario = this.usuarioform.value;
-    const usuario = new Usuario(
-      dadosFormulario.nome,
-      dadosFormulario.email,
-      Utils.getCpf(dadosFormulario.cpf),
-      dadosFormulario.dtnasc
-    );
-
-    //nome: string, email: string, cpf: string, dtnasc: Date
-
-    this.usuarioService.salvarUsuario(usuario).subscribe(f => {
+    
+    this.usuarioService.salvarUsuario(this.usuario).subscribe(f => {
 
       this.toastr.success("Usuário Salvo com sucesso", "Usuário");
       this.usuarioform.reset();
       this.carregarGrid();
+      this.usuario = new Usuario(null,null,null,null,null);
     });
 
   }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      this.nomeArquivo = event.target.files[0].name;
+      this.avatar = event.target.files[0]
+    }
+  }
+
+  public editarUsuario(usuario: any):void{
+    this.usuario = usuario;
+  }
+
+  public excluirUsuario(usuario: any):void{
+    this.usuario = usuario;
+    this.usuario.ativo = false
+
+    this.usuarioService.excluirUsuario(this.usuario).subscribe(f => {
+
+      this.toastr.success("Usuário atualizado com sucesso", "Usuário");
+      this.usuarioform.reset();
+      this.carregarGrid();
+      this.usuario = new Usuario(null,null,null,null,null);
+    });
+
+  }
+
 
   private carregarGrid(): void {
     this.usuarioService.getUsuario().subscribe((user: any) => {
@@ -84,4 +113,5 @@ export class AppComponent implements OnInit {
   get dtnasc() {
     return this.usuarioform.get('dtnasc');
   }
+  
 }

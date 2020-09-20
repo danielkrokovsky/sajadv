@@ -31,3 +31,22 @@ button{
 .alert{
   margin-top: 15px;
 }
+
+.inputfile{
+  
+  padding-top: 30px;
+  padding-left: 30px;
+
+}
+
+.custom-file-input:lang(en)~.custom-file-label::after{
+  content: "Arquivo"
+}
+
+.icon{
+  padding-left: 10px;
+}
+
+tr > th {
+  text-align: center;
+}

@@ -8,12 +8,10 @@ import { Usuario } from './usuario.model';
 })
 export class UsuarioService {
 
-    url = 'http://localhost:9001/usuario'; // api rest fake
+    url = 'http://localhost:9001/usuario';
 
-  // injetando o HttpClient
   constructor(private httpClient: HttpClient) { }
 
-  // Headers
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
@@ -22,7 +20,6 @@ export class UsuarioService {
     return this.httpClient.get<any[]>(this.url);
   }
 
-  // Obtem um carro pelo id
   getUsuarioById(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + '/' + id)
       .pipe(
@@ -31,18 +28,21 @@ export class UsuarioService {
       )
   }
 
-  // salva um carro
-  salvarUsuario(usuario: any): Observable<any> {
-    return this.httpClient.post<any>(this.url, usuario, this.httpOptions)
+  salvarUsuario(usuario: Usuario): Observable<any> {
+
+    return this.httpClient.post<any>(this.url,usuario)
+  }
+
+  excluirUsuario(usuario: Usuario): Observable<any> {
+
+    return this.httpClient.put<any>(this.url,usuario)
   }
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
-      // Erro ocorreu no lado do client
       errorMessage = error.error.message;
     } else {
-      // Erro ocorreu no lado do servidor
       errorMessage = `Código do erro: ${error.status}, ` + `menssagem: ${error.message}`;
     }
     console.log(errorMessage);

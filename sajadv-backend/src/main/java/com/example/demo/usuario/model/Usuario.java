@@ -12,11 +12,13 @@ import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.swing.text.MaskFormatter;
 
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
 @Entity
+@Where(clause = "ativo = true")
 @Data
 public class Usuario implements Serializable {
 
