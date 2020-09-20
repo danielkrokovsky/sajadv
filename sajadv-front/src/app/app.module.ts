@@ -6,10 +6,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { RouterModule, Routes } from '@angular/router';
+import { CPFPipe } from './shared/cpf.pipe';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: AppComponent,
+  
+  },
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CPFPipe
   ],
   imports: [
     BrowserModule,
@@ -17,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     ToastrModule.forRoot(),
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
   ],

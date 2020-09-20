@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,18 @@ public class UsuarioController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Usuario> create(@Validated @RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
 		
 		Usuario user = this.usuarioService.save(usuario);
 
 		return ResponseEntity.created(URI.create("/usuario/" + user.getId())).body(user);
 	}
 
+	@GetMapping
+	public ResponseEntity<Iterable<Usuario>> getAll() {
+		
+		Iterable<Usuario> user = this.usuarioService.getAll();
+
+		return ResponseEntity.ok(user);
+	}
 }

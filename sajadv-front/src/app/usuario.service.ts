@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { Usuario } from './usuario.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,14 +19,11 @@ export class UsuarioService {
   }
 
   getUsuario(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.url)
-      .pipe(
-        retry(2),
-        catchError(this.handleError))
+    return this.httpClient.get<any[]>(this.url);
   }
 
   // Obtem um carro pelo id
-  getCarById(id: number): Observable<any> {
+  getUsuarioById(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + '/' + id)
       .pipe(
         retry(2),

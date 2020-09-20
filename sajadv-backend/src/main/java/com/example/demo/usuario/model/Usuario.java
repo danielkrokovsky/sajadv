@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 
@@ -25,8 +27,11 @@ public class Usuario  implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String nome;
+	
 	private String cpf;
-	private LocalDate dtNasc;
+	
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private LocalDate dtnasc;
 	private String email;
 	private Boolean ativo;
 	@Lob

@@ -16,5 +16,10 @@ public class UsuarioService {
 
 		return usuarioRepository.save(usuario);
 	}
+	
+	public Iterable<Usuario> getAll() {
+
+		return usuarioRepository.findAll();
+	}
 
 }

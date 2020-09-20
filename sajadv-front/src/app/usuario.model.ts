@@ -6,7 +6,7 @@ export class Usuario {
     nome: any;
     cpf: string;
     email: string;
-    dtnasc:string;
+    dtnasc:Date;
     ativo: boolean;
     
 }

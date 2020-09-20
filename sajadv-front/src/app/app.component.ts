@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Usuario } from './usuario.model';
 import { UsuarioService } from './usuario.service';
@@ -14,20 +15,27 @@ export class AppComponent implements OnInit{
 
   usuarioform : FormGroup;
   usuario: Usuario = new Usuario();
+  listUsuario: Array<Usuario>;
 
 
   constructor(private fb: FormBuilder, 
     private usuarioService: UsuarioService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    protected activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
 
     this.usuarioform = this.fb.group({
       nome: [''],
-      cpf: [''],
+      cpf: new FormControl('', Validators.minLength(5)),
       email: [''],
       dtnasc: ['']
     });
+
+    this.activatedRoute.data.subscribe(data => {
+      this.carregarGrid();
+    });
+
     
   }
 
@@ -36,7 +44,15 @@ export class AppComponent implements OnInit{
     this.usuario.ativo = true;
     this.usuarioService.salvarUsuario(this.usuario).subscribe(f => {
 
-      this.toastr.success("tksryksry", "xfhkxfykxyf");
+      this.toastr.success("Usuário Salvo com sucesso", "Usuário");
+      this.usuarioform.reset();
+      this.carregarGrid();
+    });
+  }
+
+  private carregarGrid(): void{
+    this.usuarioService.getUsuario().subscribe((user: any) => {
+      this.listUsuario = user
     });
   }
 }

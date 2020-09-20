@@ -1,11 +1,15 @@
-<form [formGroup]="usuarioform">
+<fieldset class="teste">
 
-  <div class="teste">
+  <legend>
+    <h2>
+      Cadastro de Pessoa
+    </h2>
+  </legend>
 
-    Cadastro de Pessoa
+  <form [formGroup]="usuarioform" class="teste">
 
-    <div class="form-row teste" >
-      <div class="form-group col-md-1">
+    <div class="form-row">
+      <div class="form-group">
         <img
           src="https://img.freepik.com/vetores-gratis/imagens-animadas-abstratas-neon-lines_23-2148344065.jpg?size=626&ext=jpg"
           alt="Girl in a jacket" width="50" height="50">
@@ -31,7 +35,7 @@
 
       <div class="form-group col-md-2">
         <label for="inputCpf">CPF</label>
-        <input type="text" class="form-control" id="inputCpf" formControlName="cpf" [(ngModel)]="usuario.cpf">
+        <input type="number" class="form-control" id="inputCpf" formControlName="cpf" [(ngModel)]="usuario.cpf" minlength="5">
       </div>
 
       <div class="form-group col-md-3">
@@ -46,5 +50,42 @@
     </div>
 
     <button type="button" (click)="onSubmit()" class="btn btn-primary">Salvar</button>
-  </div>
-</form>
+
+
+    <table class="table">
+      <thead class="thead-light">
+
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">nome</th>
+          <th scope="col">cpf</th>
+          <th scope="col">email</th>
+          <th scope="col">dtnasc</th>
+          <th scope="col">Status</th>
+          <th scope="col">Eventos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of listUsuario">
+          <th scope="row">{{user.id}}</th>
+          <th scope="row">{{user.nome}}</th>
+          <th scope="row">{{user.cpf | CPF }}</th>
+          <th scope="row">{{user.email}}</th>
+          <th scope="row">{{user.dtnasc | date: 'dd/MM/yyyy'}}</th>
+          <th scope="row">{{user.ativo}}</th>
+          <th scope="row">
+            <a href="#" data-toggle="tooltip" ngbTooltip="Editar">
+              <span class="glyphicon">&#x270f;</span>
+            </a>
+            <a href="#" ngbTooltip="Excluir">
+              <span class="glyphicon">&#x270f;</span>
+            </a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </form>
+
+</fieldset>
