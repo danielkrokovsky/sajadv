@@ -6,7 +6,7 @@
     </h2>
   </legend>
 
-  <form [formGroup]="usuarioform" class="teste">
+  <form [formGroup]="usuarioform" class="teste" (ngSubmit)="enviarDados()">
 
     <div class="form-row">
       <div class="form-group">
@@ -28,29 +28,60 @@
     </div>
 
     <div class="form-row">
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-4">
         <label for="inputNome">Nome</label>
-        <input type="email" class="form-control" id="inputNome" formControlName="nome" [(ngModel)]="usuario.nome">
+        <input type="text" class="form-control" id="inputNome" formControlName="nome">
+
+        <div *ngIf="!nome.pristine && nome.errors">
+
+          <div class="alert alert-danger" *ngIf="nome.errors.required">
+            Nome é obrigatório.
+          </div>
+
+          <div class="alert alert-danger" *ngIf="nome.errors.maxlength">
+            Nome deve ter no máximo 100 caracters.
+          </div>
+        </div>
       </div>
 
       <div class="form-group col-md-2">
         <label for="inputCpf">CPF</label>
-        <input type="number" class="form-control" id="inputCpf" formControlName="cpf" [(ngModel)]="usuario.cpf" minlength="5">
+        <input type="number" class="form-control" id="inputCpf" formControlName="cpf">
+
+        <div *ngIf="!cpf.pristine && cpf.errors">
+          <div class="alert alert-danger" *ngIf="cpf.errors.required">
+            CPF é obrigatório.
+          </div>
+          <div class="alert alert-danger" *ngIf="cpf.errors.cpfInvalido">
+            Digite um CPF válido
+          </div>
+        </div>
       </div>
 
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-4">
         <label for="email">E-mail</label>
-        <input type="email" class="form-control" id="inputemail" formControlName="email" [(ngModel)]="usuario.email">
+        <input type="email" class="form-control" id="inputemail" formControlName="email" >
+
+        <div *ngIf="!email.pristine && email.errors">
+          <div class="alert alert-danger" *ngIf="email.errors.email">
+            Digite um e-mail válido.
+          </div>
+          <div class="alert alert-danger" *ngIf="email.errors.maxlength">
+            E-mail deve ter no máximo 400 caracters.
+          </div>
+        </div>
       </div>
 
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-2">
         <label for="email">Data Nasc</label>
-        <input type="date" class="form-control" id="inputdt" formControlName="dtnasc" [(ngModel)]="usuario.dtnasc">
+        <input type="date" class="form-control" id="inputdt" formControlName="dtnasc" >
       </div>
     </div>
 
-    <button type="button" (click)="onSubmit()" class="btn btn-primary">Salvar</button>
-
+    <div class="form-row" style="float: right; margin-bottom: 50px;margin-top: 50px;">
+      <button type="button" (click)="enviarDados()" class="btn btn-primary" [disabled]="!usuarioform.valid">Salvar</button>
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
 
     <table class="table">
       <thead class="thead-light">

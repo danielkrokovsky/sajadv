@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +26,7 @@ public class UsuarioController {
 	@PostMapping
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
 		
+		usuario.setAtivo(true);
 		Usuario user = this.usuarioService.save(usuario);
 
 		return ResponseEntity.created(URI.create("/usuario/" + user.getId())).body(user);
