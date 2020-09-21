@@ -1,11 +1,13 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Utils } from './shared/utils';
+import { removerCamposVaziosDoRequest, Utils } from './shared/utils';
 import { Validacoes } from './shared/validacoes';
 import { Usuario } from './usuario.model';
 import { UsuarioService } from './usuario.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,14 @@ export class AppComponent implements OnInit {
   nomeArquivo: any = new String('Selcione uma foto');
   avatar: any;
   usuario : Usuario;
+  page : any;
+
+  totalItems = 0;
+  itemsPerPage = 10;
+  first = 0;
+  pageNumber = 0;
+  pageSize = 0;
+  pageNumberArray = [];
 
   constructor(private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -27,17 +37,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.usuario = new Usuario(
-      null,
-      null,
-      null,
-      null,
-      null
-    );
+    this.usuario = new Usuario();
 
     this.criarFormularioDeUsuario();
     this.activatedRoute.data.subscribe(data => {
       this.carregarGrid();
+    });
+  }
+
+  public carregarGrid(pagina?: any): void {
+
+    this.usuarioService.getUsuario({ page: pagina, size: this.itemsPerPage, sort : 'nome' }).subscribe((user: any) => {
+      this.listUsuario = user.body.content;
+      this.totalItems = Math.ceil(user.body.totalElements / this.itemsPerPage);
+      this.pageNumberArray = Array(this.totalItems).map((x,i)=>i);
     });
   }
 
@@ -61,7 +74,7 @@ export class AppComponent implements OnInit {
       this.toastr.success("Usuário Salvo com sucesso", "Usuário");
       this.usuarioform.reset();
       this.carregarGrid();
-      this.usuario = new Usuario(null,null,null,null,null);
+      this.usuario = new Usuario();
     });
 
   }
@@ -86,17 +99,35 @@ export class AppComponent implements OnInit {
       this.toastr.success("Usuário atualizado com sucesso", "Usuário");
       this.usuarioform.reset();
       this.carregarGrid();
-      this.usuario = new Usuario(null,null,null,null,null);
+      this.usuario = new Usuario();
     });
 
   }
 
+  public pesquisar(): void{
 
-  private carregarGrid(): void {
-    this.usuarioService.getUsuario().subscribe((user: any) => {
-      this.listUsuario = user
+    const usuario = new Usuario();
+    usuario.nome = this.nome.value;
+    usuario.cpf = (this.cpf.value !== null && this.cpf.value !== undefined) ?  this.cpf.value.split('.').join('').replace('-', '') : null;
+    usuario.email = this.email.value;
+    const date = (this.dtnasc.value != null && this.dtnasc.value !== undefined) ? moment(this.dtnasc.value) : null 
+    const request = {
+    "usuario.nome" : this.nome.value,
+    "usuario.cpf" : (this.cpf.value !== null && this.cpf.value !== undefined) ?  this.cpf.value.split('.').join('').replace('-', '') : null,
+    "usuario.email" : this.email.value,
+    "dtnasc" : (date != null && date !== undefined) ? date.format('DD.MM.yyyy') : null
+  }
+    
+    let req = removerCamposVaziosDoRequest(request);
+
+    this.usuarioService.queryUsuario(req).subscribe(f => {
+
+      this.listUsuario = [];
+      this.listUsuario = f.body.content;
     });
   }
+
+  
 
   get nome() {
     return this.usuarioform.get('nome');

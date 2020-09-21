@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Usuario } from './usuario.model';
+import { createRequestOption } from './shared/utils';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,17 +16,19 @@ export class UsuarioService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
+/*
+  getUsuario(req?: any): Observable<any[]> {
 
-  getUsuario(): Observable<any[]> {
-    return this.httpClient.get<any[]>(this.url);
-  }
+    const options = createRequestOption(req);
 
-  getUsuarioById(id: number): Observable<any> {
-    return this.httpClient.get<any>(this.url + '/' + id)
-      .pipe(
-        retry(2),
-        catchError(this.handleError)
-      )
+    return this.httpClient.get<any[]>(this.url, { params: options, observe: 'response' });
+  
+  }*/
+
+  getUsuario(req?: any): Observable<any> {
+    const options = createRequestOption(req);
+
+    return this.httpClient.get<any[]>(this.url, { params: options, observe: 'response' });
   }
 
   salvarUsuario(usuario: Usuario): Observable<any> {
@@ -38,15 +41,9 @@ export class UsuarioService {
     return this.httpClient.put<any>(this.url,usuario)
   }
 
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Código do erro: ${error.status}, ` + `menssagem: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(errorMessage);
-  };
+  queryUsuario(req?: any): Observable<any> {
+    const options = createRequestOption(req);
 
+    return this.httpClient.get<any[]>(this.url+"/flter", { params: options, observe: 'response' });
+  }
 }

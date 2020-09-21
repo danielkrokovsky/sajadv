@@ -3,6 +3,9 @@ package com.example.demo.usuario.controller;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.usuario.model.Usuario;
 import com.example.demo.usuario.service.UsuarioService;
+import com.querydsl.core.types.Predicate;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -32,7 +34,7 @@ public class UsuarioController {
 		usuario.setAtivo(true);
 		Usuario user = this.usuarioService.save(usuario);
 
-		return ResponseEntity.created(URI.create("/usuario/" + 1)).body(user);
+		return ResponseEntity.created(URI.create("/usuario/" +user.getId())).body(user);
 	}
 	
 	@PutMapping
@@ -40,13 +42,22 @@ public class UsuarioController {
 		
 		Usuario user = this.usuarioService.save(usuario);
 
-		return ResponseEntity.created(URI.create("/usuario/" + 1)).body(user);
+		return ResponseEntity.created(URI.create("/usuario/" +user.getId())).body(user);
 	}
 
 	@GetMapping
-	public ResponseEntity<Iterable<Usuario>> getAll() {
+	public ResponseEntity<Page<Usuario>> getAll(Pageable page) {
 		
-		Iterable<Usuario> user = this.usuarioService.getAll();
+		Page<Usuario> user = this.usuarioService.getAll(page);
+
+		return ResponseEntity.ok(user);
+	}
+	
+	@GetMapping(path = "/flter")
+	public ResponseEntity<Page<Usuario>> getAllFilter(@QuerydslPredicate(root = Usuario.class) Predicate predicate, Pageable page) {
+		
+		
+		Page<Usuario> user = this.usuarioService.getUsuarioFilter(predicate, page);
 
 		return ResponseEntity.ok(user);
 	}
