@@ -14,7 +14,7 @@ Ter os seguintes programas instalados:
 	
  - Acessar a pasta sajadv-backend interna do projeto.
  
-	- Acessar a sajadv-backend
+	- Acessar a pasta sajadv-backend
 	- executar o comando:
 	
 	`mvn spring-boot:run`
@@ -22,7 +22,7 @@ Ter os seguintes programas instalados:
 	
  - Acessar a pasta sajadv-front interna do projeto.
  
-	- Acessar a sajadv-backend
+	- Acessar a pasta sajadv-front
 	- executar o comando:
 	
 	`npm start`
