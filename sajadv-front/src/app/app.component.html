@@ -116,7 +116,6 @@
           <th scope="col">Cpf</th>
           <th scope="col">E-mail</th>
           <th scope="col">Data Nascimento</th>
-          <th scope="col">Status</th>
           <th scope="col">Eventos</th>
         </tr>
       </thead>
@@ -127,7 +126,6 @@
           <th scope="row">{{user.cpf | CPF }}</th>
           <th scope="row">{{user.email}}</th>
           <th scope="row">{{user.dtnasc | date: 'dd/MM/yyyy'}}</th>
-          <th scope="row">{{user.ativo}}</th>
           <th scope="row">
             <center>
               <a href="#" data-toggle="tooltip" ngbTooltip="Editar" class="icon" (click)="editarUsuario(user)">
