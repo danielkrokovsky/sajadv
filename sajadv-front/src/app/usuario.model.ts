@@ -16,7 +16,7 @@ export class Usuario {
     cpf: string;
     email: string;
     dtnasc: Date;
-    ativo: boolean;
+    ativo: any;
     avatar: File;
     
 }

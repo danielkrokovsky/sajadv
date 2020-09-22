@@ -8,6 +8,7 @@ import { Validacoes } from './shared/validacoes';
 import { Usuario } from './usuario.model';
 import { UsuarioService } from './usuario.service';
 import * as moment from 'moment';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -66,8 +67,6 @@ export class AppComponent implements OnInit {
 
 
   public enviarDados(): void {
-
-    const dadosFormulario = this.usuarioform.value;
     
     this.usuarioService.salvarUsuario(this.usuario).subscribe(f => {
 
@@ -75,8 +74,9 @@ export class AppComponent implements OnInit {
       this.usuarioform.reset();
       this.carregarGrid();
       this.usuario = new Usuario();
+    }, (error) =>{
+      this.toastr.error("Error ao cadastrar usuário", "Usuário");
     });
-
   }
 
   onFileChange(event) {
@@ -84,6 +84,12 @@ export class AppComponent implements OnInit {
       this.nomeArquivo = event.target.files[0].name;
       this.avatar = event.target.files[0]
     }
+  }
+
+  public limpar(): void{
+
+    this.usuarioform.reset();
+    this.carregarGrid();
   }
 
   public editarUsuario(usuario: any):void{
@@ -96,38 +102,38 @@ export class AppComponent implements OnInit {
 
     this.usuarioService.excluirUsuario(this.usuario).subscribe(f => {
 
-      this.toastr.success("Usuário atualizado com sucesso", "Usuário");
+      this.toastr.success("Usuário excluido com sucesso", "Usuário");
       this.usuarioform.reset();
       this.carregarGrid();
       this.usuario = new Usuario();
+    }, (error) =>{
+      this.toastr.error("Error ao excluir usuário", "Usuário");
     });
-
   }
 
   public pesquisar(): void{
 
-    const usuario = new Usuario();
-    usuario.nome = this.nome.value;
-    usuario.cpf = (this.cpf.value !== null && this.cpf.value !== undefined) ?  this.cpf.value.split('.').join('').replace('-', '') : null;
-    usuario.email = this.email.value;
     const date = (this.dtnasc.value != null && this.dtnasc.value !== undefined) ? moment(this.dtnasc.value) : null 
+
     const request = {
-    "usuario.nome" : this.nome.value,
-    "usuario.cpf" : (this.cpf.value !== null && this.cpf.value !== undefined) ?  this.cpf.value.split('.').join('').replace('-', '') : null,
-    "usuario.email" : this.email.value,
+    "nome" : this.nome.value,
+    "cpf" : (this.cpf.value !== null && this.cpf.value !== undefined) ?  this.cpf.value.split('.').join('').replace('-', '') : null,
+    "email" : this.email.value,
     "dtnasc" : (date != null && date !== undefined) ? date.format('DD.MM.yyyy') : null
+    
   }
     
     let req = removerCamposVaziosDoRequest(request);
-
     this.usuarioService.queryUsuario(req).subscribe(f => {
 
       this.listUsuario = [];
       this.listUsuario = f.body.content;
+
+      if(this.listUsuario === null || this.listUsuario === undefined || this.listUsuario.length === 0){
+        this.toastr.error("nenhum Usuário encontrado", "Usuário");
+      }
     });
   }
-
-  
 
   get nome() {
     return this.usuarioform.get('nome');

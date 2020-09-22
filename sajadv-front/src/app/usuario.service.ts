@@ -16,14 +16,6 @@ export class UsuarioService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
-/*
-  getUsuario(req?: any): Observable<any[]> {
-
-    const options = createRequestOption(req);
-
-    return this.httpClient.get<any[]>(this.url, { params: options, observe: 'response' });
-  
-  }*/
 
   getUsuario(req?: any): Observable<any> {
     const options = createRequestOption(req);

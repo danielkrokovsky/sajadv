@@ -4,13 +4,17 @@ export class Validacoes {
 
   static ValidaCpf(controle: AbstractControl) {
 
-    if(controle.value === null){
+    if (controle.value === null) {
       return { cpfInvalido: true }
     }
 
-    const cpf = controle.value.split('.').join('').replace('-', '');
+    let cpf = null;
 
-    if(cpf.toString().length > 11){
+    if (controle.value !== "" && controle.value !== undefined) {
+      cpf = controle.value.split('.').join('').replace('-', '');
+    }
+
+    if (cpf !== undefined && cpf !== null && cpf.toString().length > 11) {
       return { cpfInvalido: true }
     }
 
