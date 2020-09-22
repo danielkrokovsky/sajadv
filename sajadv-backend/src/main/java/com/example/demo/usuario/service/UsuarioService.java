@@ -20,10 +20,13 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 	public Usuario save(Usuario usuario) {
-
+		
+		String cpfSemFormatacao = this.cpfSemFormatacao(usuario.getCpf());
+		usuario.setCpf(cpfSemFormatacao);
+		
 		if (usuario.getId() == null) {
 
-			Optional<Usuario> findByCpf = this.usuarioRepository.findByCpf(cpfSemFormatacao(usuario.getCpf()));
+			Optional<Usuario> findByCpf = this.usuarioRepository.findByCpf(usuario.getCpf());
 
 			if (!findByCpf.isEmpty()) {
 				throw new CpfCadastroException("Cpf já cadastrado na base");
@@ -48,7 +51,8 @@ public class UsuarioService {
 	private String cpfSemFormatacao(String cpf) {
 
 		if (cpf != null) {
-			return cpf.replace(".", "").replace("-", "");
+			String cpfw = cpf.replace(".", "").replace("-", "");
+			return cpfw;
 		}
 
 		return "";
