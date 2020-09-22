@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.swing.text.MaskFormatter;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,13 +33,22 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@NotBlank(message = "Nome não pode ser nulo")
+	@Size(max = 20, message = "Nome não pode ter mais que 150 caracteres")
 	private String nome;
 
+	@NotBlank(message = "Cpf não pode ser nulo")
 	private String cpf;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate dtnasc;
+	
+	@Email
+	@NotBlank(message = "E-mail não pode ser nulo")
+	@Size(max = 20, message = "E-mail não pode ter mais que 400 caracteres")
 	private String email;
+	
 	private Boolean ativo;
 	@Lob
 	private byte[] avatar;

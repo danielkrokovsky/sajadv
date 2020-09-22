@@ -2,6 +2,8 @@ package com.example.demo.usuario.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ public class UsuarioController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> create(@Valid @RequestBody Usuario usuario) {
 		
 		usuario.setAtivo(true);
 		Usuario user = this.usuarioService.save(usuario);
