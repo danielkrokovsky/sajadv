@@ -25,11 +25,12 @@ export class AppComponent implements OnInit {
   page : any;
 
   totalItems = 0;
-  itemsPerPage = 10;
+  itemsPerPage = 5
   first = 0;
   pageNumber = 0;
   pageSize = 0;
   pageNumberArray = [];
+  errors = [];
 
   constructor(private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -74,7 +75,9 @@ export class AppComponent implements OnInit {
       this.usuarioform.reset();
       this.carregarGrid();
       this.usuario = new Usuario();
+      this.errors = [];
     }, (error) =>{
+      this.errors = error.error;
       this.toastr.error("Error ao cadastrar usuário", "Usuário");
     });
   }
@@ -90,6 +93,7 @@ export class AppComponent implements OnInit {
 
     this.usuarioform.reset();
     this.carregarGrid();
+    this.errors = [];
   }
 
   public editarUsuario(usuario: any):void{

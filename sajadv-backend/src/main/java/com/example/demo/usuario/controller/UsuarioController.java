@@ -33,7 +33,8 @@ public class UsuarioController {
 	@PostMapping
 	public ResponseEntity<Usuario> create(@Valid @RequestBody Usuario usuario) {
 		
-		usuario.setAtivo(true);
+		usuario.setAtivo(true);		
+		
 		Usuario user = this.usuarioService.save(usuario);
 
 		return ResponseEntity.created(URI.create("/usuario/" +user.getId())).body(user);

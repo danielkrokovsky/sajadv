@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,10 +36,11 @@ public class Usuario implements Serializable {
 	private Long id;
 	
 	@NotBlank(message = "Nome não pode ser nulo")
-	@Size(max = 20, message = "Nome não pode ter mais que 150 caracteres")
+	@Size(max = 150, message = "Nome não pode ter mais que 150 caracteres")
 	private String nome;
 
 	@NotBlank(message = "Cpf não pode ser nulo")
+	@Column(name="cpf", unique=true)
 	private String cpf;
 
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
@@ -46,7 +48,7 @@ public class Usuario implements Serializable {
 	
 	@Email
 	@NotBlank(message = "E-mail não pode ser nulo")
-	@Size(max = 20, message = "E-mail não pode ter mais que 400 caracteres")
+	@Size(max = 400, message = "E-mail não pode ter mais que 400 caracteres")
 	private String email;
 	
 	private Boolean ativo;

@@ -18,8 +18,10 @@
       <div class="form-group col-md-4 inputfile">
         <div class="input-group mb-3">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileChange($event)" formControlName="avatar" [(ngModel)]="usuario.avatar">
-            <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">{{nomeArquivo}}</label>
+            <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onFileChange($event)"
+              formControlName="avatar" [(ngModel)]="usuario.avatar">
+            <label class="custom-file-label" for="inputGroupFile02"
+              aria-describedby="inputGroupFileAddon02">{{nomeArquivo}}</label>
           </div>
         </div>
       </div>
@@ -35,7 +37,7 @@
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="inputNome">Nome</label>
-        <input type="text" class="form-control" id="inputNome" formControlName="nome"  [(ngModel)]="usuario.nome">
+        <input type="text" class="form-control" id="inputNome" formControlName="nome" [(ngModel)]="usuario.nome">
 
         <div *ngIf="!nome.pristine && nome.errors">
 
@@ -65,7 +67,7 @@
 
       <div class="form-group col-md-4">
         <label for="email">E-mail</label>
-        <input type="email" class="form-control" id="inputemail" formControlName="email"  [(ngModel)]="usuario.email">
+        <input type="email" class="form-control" id="inputemail" formControlName="email" [(ngModel)]="usuario.email">
 
         <div *ngIf="!email.pristine && email.errors">
           <div class="alert alert-danger" *ngIf="email.errors.email">
@@ -83,12 +85,27 @@
       </div>
     </div>
 
-    <div class="form-row" style="float: right; margin-bottom: 50px;margin-top: 50px;">
-      <button type="button" (click)="enviarDados()" class="btn btn-primary"
-        [disabled]="!usuarioform.valid">Salvar</button>
-      <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
-      <button type="button" class="btn btn-primary" (click)="limpar()">Limpar</button>
+    <div class="form-row" style="margin-bottom: 50px;margin-top:20px;">
+    
+      <div style="width: 80%;">
+        <div *ngIf="errors?.length">
+    
+          <div class="alert alert-danger" *ngFor="let error of errors">
+            {{error.message}}
+          </div>
+    
+        </div>
+      </div>
+    
+      <div  style="float: right;margin-top: 20px;" >
+        <button type="button" (click)="enviarDados()" class="btn btn-primary"
+          [disabled]="!usuarioform.valid">Salvar</button>
+        <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+        <button type="button" class="btn btn-primary" (click)="limpar()">Limpar</button>
+      </div>
     </div>
+
+
 
     <table class="table table-striped">
       <thead class="thead-light">
@@ -113,13 +130,13 @@
           <th scope="row">{{user.ativo}}</th>
           <th scope="row">
             <center>
-            <a href="#" data-toggle="tooltip" ngbTooltip="Editar" class="icon" (click)="editarUsuario(user)">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-            <a href="#" ngbTooltip="Excluir" class="icon" (click)="excluirUsuario(user)">
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </a>
-          </center>
+              <a href="#" data-toggle="tooltip" ngbTooltip="Editar" class="icon" (click)="editarUsuario(user)">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
+              <a href="#" ngbTooltip="Excluir" class="icon" (click)="excluirUsuario(user)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </a>
+            </center>
           </th>
         </tr>
       </tbody>
@@ -127,8 +144,8 @@
 
     <nav aria-label="Page navigation example" style="float: right;">
       <ul class="pagination">
-        <li class="page-item" *ngFor="let user of pageNumberArray;let indexOfelement=index;" >
-          <a class="page-link" href="#" (click)= "carregarGrid(indexOfelement)">{{indexOfelement + 1}}</a>
+        <li class="page-item" *ngFor="let user of pageNumberArray;let indexOfelement=index;">
+          <a class="page-link" href="#" (click)="carregarGrid(indexOfelement)">{{indexOfelement + 1}}</a>
         </li>
       </ul>
     </nav>
